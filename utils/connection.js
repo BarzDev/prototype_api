@@ -3,8 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const localhost = "mongodb://127.0.0.1:27017/test";
-const mongoUri = process.env.MONGO_URI;
-const uri = mongoUri ? mongoUri : localhost;
+const mongoUri = process.env.MONGODB_URI;
 
 const connectionParams = {
   useNewUrlParser: true,
@@ -13,7 +12,7 @@ const connectionParams = {
 
 async function connectDB() {
   try {
-    await mongoose.connect(uri, connectionParams);
+    await mongoose.connect(mongoUri, connectionParams);
     mongoUri
       ? console.log("DB Connected")
       : console.log("DB Localhost Connected");
