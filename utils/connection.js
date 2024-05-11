@@ -14,7 +14,9 @@ const connectionParams = {
 async function connectDB() {
   try {
     await mongoose.connect(uri, connectionParams);
-    console.log("DB Connected");
+    mongoUri
+      ? console.log("DB Connected")
+      : console.log("DB Localhost Connected");
   } catch (err) {
     console.error("DB Connection Error:", err);
   }

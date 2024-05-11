@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const { apiKeyAuth } = require("@vpriem/express-api-key-auth");
 
 const connectDB = require("./utils/connection");
+const apiKey = process.env.API_KEY;
 const port = 3000;
 
 const usersRoute = require("./routes/users");
@@ -11,7 +13,9 @@ const loginRoute = require("./routes/login");
 
 connectDB().catch((err) => console.log(err));
 
-app.use(cors());
+// app.use(cors());
+const apiKeyMiddleware = apiKeyAuth([apiKey]);
+app.use(apiKeyMiddleware);
 app.use(express.json());
 
 app.use("/users", usersRoute);
