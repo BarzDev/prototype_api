@@ -12,7 +12,7 @@ const connectionParams = {
 
 async function connectDB() {
   try {
-    await mongoose.connect(mongoUri, connectionParams);
+    await mongoose.connect(mongoUri);
     mongoUri
       ? console.log("DB Connected")
       : console.log("DB Localhost Connected");

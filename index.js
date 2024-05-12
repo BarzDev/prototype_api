@@ -1,19 +1,20 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const { apiKeyAuth } = require("@vpriem/express-api-key-auth");
 
 const connectDB = require("./utils/connection");
 const apiKey = process.env.API_KEY;
-const port = 3000;
 
 const usersRoute = require("./routes/users");
 const postingRoute = require("./routes/posting");
 const loginRoute = require("./routes/login");
 
-connectDB().catch((err) => console.log(err));
+connectDB();
 
-// app.use(cors());
 const apiKeyMiddleware = apiKeyAuth([apiKey]);
 app.use(apiKeyMiddleware);
 app.use(express.json());
@@ -26,8 +27,9 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 module.exports = app;
