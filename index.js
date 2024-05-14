@@ -1,6 +1,12 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+const cors = require("cors");
+const corsConfig = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "DELETE", "PUT"],
+};
 
 dotenv.config();
 
@@ -13,9 +19,9 @@ const usersRoute = require("./routes/users");
 const postingRoute = require("./routes/posting");
 const loginRoute = require("./routes/login");
 
-connectDB();
-
 const apiKeyMiddleware = apiKeyAuth([apiKey]);
+
+app.use(cors(corsConfig));
 app.use(apiKeyMiddleware);
 app.use(express.json());
 
@@ -27,9 +33,12 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const PORT = process.env.PORT || 5000;
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
 });
 
 module.exports = app;
